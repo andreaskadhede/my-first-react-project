@@ -1,9 +1,28 @@
-export default function User({name, mail, image}){
+import { useNavigate } from "react-router-dom";
+
+export default function User({ user }) {
+
+    const navigate = useNavigate();
+
+    function handleClick() {
+        navigate(`/users/${user.id}`)
+    }
+
+      
+    // get the initials - get the part before the @ symbol in the mail
+    function getInitials() {
+        const initials = user.mail?.split("@")[0]; 
+        return initials;
+    }
+
     return (
-        <div className="user-card">
-            <img src={image} alt={name} />
-            <h2>{name}</h2>
-            <p>{mail}</p>
-        </div>
-    )
-};
+        <article className="user-card" onClick={handleClick}>
+            <img src={user.image || "https://placehold.co/600x400?text=Error+loading+image"} alt={user.name} />
+            <h2>
+                {user.name} ({user.mail ? getInitials() : "No initials"})
+            </h2>
+            <p className="title">{user.title ? user.title : "Unknow Title"}</p>
+            <p>{user.mail ? <a href={`mailto:${user.mail}`}>{user.mail}</a> : "No email"}</p>
+        </article>
+    );
+}

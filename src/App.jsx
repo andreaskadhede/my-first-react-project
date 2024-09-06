@@ -1,36 +1,22 @@
-import { useEffect, useState } from "react";
-import './App.css';
-import User from "./components/User";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CreatePage from "./pages/CreatePage";
+import NavBar from "./components/NavBar";
+import UserDetailPage from "./pages/UserDetailPage";
+import UserUpdatePage from "./pages/UserUpdatePage";
 
-function App() {
-  const [users, setUsers] = useState([ ]);
-  console.log(users);
 
-  useEffect(() => {
-    // Fetch data from API
-    fetchUsers();
-  }, []);
 
-  async function fetchUsers() {
-    const response = await fetch(
-      "https://raw.githubusercontent.com/cederdorff/race/master/data/users.json"
-    );
-    const data = await response.json();
-    console.log(data);
-    setUsers(data);
-  };
-
+export default function App() {
   return (
     <main className="app">
-      <h1>Users</h1>
-
-      <section className="grid">
-        {users.map(user => (
-          <User key={user.id} name={user.name} mail={user.mail} image={user.image} />
-        ))}
-      </section>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage/>}/>
+        <Route path="/create" element={<CreatePage/>}/>
+        <Route path="/users/:id" element={<UserDetailPage/>}/>
+        <Route path="/users/:id/update/" element={<UserUpdatePage/>}/>
+      </Routes>
     </main>
   )
 }
-
-export default App
